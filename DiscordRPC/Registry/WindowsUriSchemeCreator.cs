@@ -18,7 +18,7 @@ namespace DiscordRPC.Registry
                 throw new PlatformNotSupportedException("URI schemes can only be registered on Windows");
             }
 
-            //Prepare our location
+            // Prepare our location
             string location = register.ExecutablePath;
             if (location == null)
             {
@@ -26,23 +26,23 @@ namespace DiscordRPC.Registry
                 return false;
             }
 
-            //Prepare the Scheme, Friendly name, default icon and default command
+            // Prepare the Scheme, Friendly name, default icon and default command
             string scheme = $"discord-{register.ApplicationID}";
             string friendlyName = $"Run game {register.ApplicationID} protocol";
             string defaultIcon = location;
             string command = location;
 
-            //We have a steam ID, so attempt to replce the command with a steam command
+            // We have a steam ID, so attempt to replace the command with a steam command
             if (register.UsingSteamApp)
             {
-                //Try to get the steam location. If found, set the command to a run steam instead.
+                // Try to get the steam location. If found, set the command to a run steam instead.
                 string steam = GetSteamLocation();
                 if (steam != null)
                     command = string.Format("\"{0}\" steam://rungameid/{1}", steam, register.SteamAppID);
 
             }
 
-            //Okay, now actually register it
+            // Okay, now actually register it
             CreateUriScheme(scheme, friendlyName, defaultIcon, command);
             return true;
         }

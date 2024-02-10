@@ -303,3 +303,6 @@ Thumbs.db
 # Docfx generation
 docs/
 _site/
+
+# MacOS
+.DS_Store

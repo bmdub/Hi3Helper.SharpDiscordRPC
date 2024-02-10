@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 namespace DiscordRPC.Registry
 {
     internal class UriSchemeRegister
-	{
+    {
         /// <summary>
         /// The ID of the Discord App to register
         /// </summary>
@@ -47,7 +47,7 @@ namespace DiscordRPC.Registry
         /// </summary>
         public bool RegisterUriScheme()
         {
-            //Get the creator
+            // Get the creator
             IUriSchemeCreator creator = null;
             switch(Environment.OSVersion.Platform)
             {
@@ -75,7 +75,7 @@ namespace DiscordRPC.Registry
                     }
 #endif
                     break;
-                
+
 #if !USE_RUNTIME_INFO
                 case PlatformID.MacOSX:
                     _logger.Trace("Creating MacOSX Scheme Creator");
@@ -84,11 +84,11 @@ namespace DiscordRPC.Registry
 #endif
 
                 default:
-                    _logger.Error("Unkown Platform: {0}", Environment.OSVersion.Platform);
+                    _logger.Error("Unknown Platform: {0}", Environment.OSVersion.Platform);
                     throw new PlatformNotSupportedException("Platform does not support registration.");
             }
 
-            //Regiser the app
+            // Register the app
             if (creator.RegisterUriScheme(this))
             {
                 _logger.Info("URI scheme registered.");

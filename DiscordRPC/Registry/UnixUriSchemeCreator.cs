@@ -1,10 +1,7 @@
 ﻿using DiscordRPC.Logging;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace DiscordRPC.Registry
 {
@@ -32,22 +29,21 @@ namespace DiscordRPC.Registry
                 return false;
             }
 
-            //Prepare the command
+            // Prepare the command
             string command = null;
             if (register.UsingSteamApp)
             {
-                //A steam command isntead
+                // A steam command instead
                 command = $"xdg-open steam://rungameid/{register.SteamAppID}";
             }
             else
             {
-                //Just a regular discord command
+                // Just a regular discord command
                 command = exe;
             }
 
-
-            //Prepare the file
-            string desktopFileFormat = 
+            // Prepare the file
+            string desktopFileFormat =
 @"[Desktop Entry]
 Name=Game {0}
 Exec={1} %u
@@ -55,10 +51,10 @@ Type=Application
 NoDisplay=true
 Categories=Discord;Games;
 MimeType=x-scheme-handler/discord-{2}";
-            
+
             string file = string.Format(desktopFileFormat, register.ApplicationID, command, register.ApplicationID);
 
-            //Prepare the path
+            // Prepare the path
             string filename = $"/discord-{register.ApplicationID}.desktop";
             string filepath = home + "/.local/share/applications";
             var directory = Directory.CreateDirectory(filepath);
@@ -68,10 +64,10 @@ MimeType=x-scheme-handler/discord-{2}";
                 return false;
             }
 
-            //Write the file
+            // Write the file
             File.WriteAllText(filepath + filename, file);
 
-            //Register the Mime type
+            // Register the Mime type
             if (!RegisterMime(register.ApplicationID))
             {
                 logger.Error("Failed to register because the Mime failed.");
@@ -84,15 +80,15 @@ MimeType=x-scheme-handler/discord-{2}";
 
         private bool RegisterMime(string appid)
         {
-            //Format the arguments
+            // Format the arguments
             string format = "default discord-{0}.desktop x-scheme-handler/discord-{0}";
             string arguments = string.Format(format, appid);
 
-            //Run the process and wait for response
+            // Run the process and wait for response
             Process process = Process.Start("xdg-mime", arguments);
             process.WaitForExit();
-            
-            //Return if succesful
+
+            // Return if successful
             return process.ExitCode >= 0;
         }
     }

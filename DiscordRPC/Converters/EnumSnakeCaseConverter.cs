@@ -1,98 +1,92 @@
-﻿using DiscordRPC.Helper;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace DiscordRPC.Converters
 {
-	/// <summary>
-	/// Converts enums with the <see cref="EnumValueAttribute"/> into Json friendly terms. 
-	/// </summary>
-	internal class EnumSnakeCaseConverter : JsonConverter
-	{
-		public override bool CanConvert(Type objectType)
-		{
-			return objectType.IsEnum;
-		}
+    /// <summary>
+    /// Converts enums with the <see cref="EnumValueAttribute"/> into Json friendly terms.
+    /// </summary>
+    internal class EnumSnakeCaseConverter : JsonConverter<object>
+    {
+        public override bool CanConvert(Type objectType)
+        {
+            Type type = objectType;
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                type = type.GetGenericArguments().First();
+            return type.IsEnum;
+        }
 
-		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-		{
-			if (reader.Value == null) return null;
+        public override object Read(ref Utf8JsonReader reader, Type objectType, JsonSerializerOptions serializer)
+        {
+            TryParseEnum(objectType, reader.GetString(), out var obj);
+            return obj;
+        }
 
-			object val = null;
-			if (TryParseEnum(objectType, (string)reader.Value, out val))
-				return val;
+        public override void Write(Utf8JsonWriter writer, object value, JsonSerializerOptions serializer)
+        {
+            var enumtype = value.GetType();
+            var name = Enum.GetName(enumtype, value);
 
-			return existingValue;
-		}
+            // Get each member and look for hte correct one
+            var members = enumtype.GetMembers(BindingFlags.Public | BindingFlags.Static);
+            foreach (var m in members)
+            {
+                if (m.Name.Equals(name))
+                {
+                    var attributes = m.GetCustomAttributes(typeof(EnumValueAttribute), true);
+                    if (attributes.Length > 0)
+                    {
+                        name = ((EnumValueAttribute)attributes[0]).Value;
+                    }
+                }
+            }
 
-		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-		{
-			var enumtype = value.GetType();
-			var name = Enum.GetName(enumtype, value);
+            writer.WriteStringValue(name);
+        }
 
-			//Get each member and look for hte correct one
-			var members = enumtype.GetMembers(BindingFlags.Public | BindingFlags.Static);
-			foreach (var m in members)
-			{
-				if (m.Name.Equals(name))
-				{
-					var attributes = m.GetCustomAttributes(typeof(EnumValueAttribute), true);
-					if (attributes.Length > 0)
-					{
-						name = ((EnumValueAttribute)attributes[0]).Value;
-					}
-				}
-			}
+        public bool TryParseEnum(Type enumType, string str, out object obj)
+        {
+            // Make sure the string isn't null
+            if (str == null)
+            {
+                obj = null;
+                return false;
+            }
 
-			writer.WriteValue(name);
-		}
+            // Get the real type
+            Type type = enumType;
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+                type = type.GetGenericArguments().First();
 
+            // Make sure its actually a enum
+            if (!type.IsEnum)
+            {
+                obj = null;
+                return false;
+            }
 
-		public bool TryParseEnum(Type enumType, string str, out object obj)
-		{
-			//Make sure the string isn;t null
-			if (str == null)
-			{
-				obj = null;
-				return false;
-			}	
+            // Get each member and look for hte correct one
+            var members = type.GetMembers(BindingFlags.Public | BindingFlags.Static);
+            foreach (var m in members)
+            {
+                var attributes = m.GetCustomAttributes(typeof(EnumValueAttribute), true);
+                foreach(var a in attributes)
+                {
+                    var enumval = (EnumValueAttribute)a;
+                    if (str.Equals(enumval.Value))
+                    {
+                        obj = Enum.Parse(type, m.Name, ignoreCase: true);
+                        return true;
+                    }
+                }
+            }
 
-			//Get the real type
-			Type type = enumType;
-			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-				type = type.GetGenericArguments().First();
-
-			//Make sure its actually a enum
-			if (!type.IsEnum)
-			{
-				obj = null;
-				return false;
-			}
-
-
-			//Get each member and look for hte correct one
-			var members = type.GetMembers(BindingFlags.Public | BindingFlags.Static);
-			foreach (var m in members)
-			{
-				var attributes = m.GetCustomAttributes(typeof(EnumValueAttribute), true);
-				foreach(var a in attributes)
-				{
-					var enumval = (EnumValueAttribute)a;
-					if (str.Equals(enumval.Value))
-					{
-						obj = Enum.Parse(type, m.Name, ignoreCase: true);
-
-						return true;
-					}
-				}
-			}
-
-			//We failed
-			obj = null;
-			return false;
-		}
-
-	}
+            // We failed
+            obj = null;
+            return false;
+        }
+    }
 }

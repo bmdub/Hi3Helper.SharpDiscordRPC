@@ -1,15 +1,14 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using DiscordRPC.Exceptions;
 using DiscordRPC.Helper;
+using System;
 using System.Text;
-using DiscordRPC.Exceptions;
+using System.Text.Json.Serialization;
 
 namespace DiscordRPC
 {
     /// <summary>
     /// The base rich presence structure
     /// </summary>
-    [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     [Serializable]
     public class BaseRichPresence
     {
@@ -17,7 +16,8 @@ namespace DiscordRPC
         /// The user's current <see cref="Party"/> status. For example, "Playing Solo" or "With Friends".
         /// <para>Max 128 bytes</para>
         /// </summary>
-        [JsonProperty("state", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("state")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string State
         {
             get { return _state; }
@@ -28,14 +28,15 @@ namespace DiscordRPC
             }
         }
 
-        /// <summary>Inernal inner state string</summary>
+        /// <summary>Internal inner state string</summary>
         protected internal string _state;
 
         /// <summary>
         /// What the user is currently doing. For example, "Competitive - Total Mayhem".
         /// <para>Max 128 bytes</para>
         /// </summary>
-        [JsonProperty("details", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("details")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string Details
         {
             get { return _details; }
@@ -45,25 +46,28 @@ namespace DiscordRPC
                     throw new StringOutOfRangeException(128);
             }
         }
-        /// <summary>Inernal inner detail string</summary>
+        /// <summary>Internal inner detail string</summary>
         protected internal string _details;
 
         /// <summary>
         /// The time elapsed / remaining time data.
         /// </summary>
-        [JsonProperty("timestamps", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("timestamps")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Timestamps Timestamps { get; set; }
 
         /// <summary>
         /// The names of the images to use and the tooltips to give those images.
         /// </summary>
-        [JsonProperty("assets", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("assets")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Assets Assets { get; set; }
 
         /// <summary>
         /// The party the player is currently in. The <see cref="Party.ID"/> must be set for this to be included in the RichPresence update.
         /// </summary>
-        [JsonProperty("party", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("party")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Party Party { get; set; }
 
         /// <summary>
@@ -71,7 +75,8 @@ namespace DiscordRPC
         /// <para>To keep security on the up and up, Discord requires that you properly hash/encode/encrypt/put-a-padlock-on-and-swallow-the-key-but-wait-then-how-would-you-open-it your secrets.</para>
         /// <para>Visit the <see href="https://discordapp.com/developers/docs/rich-presence/how-to#secrets">Rich Presence How-To</see> for more information.</para>
         /// </summary>
-        [JsonProperty("secrets", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("secrets")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Secrets Secrets { get; set; }
 
         /// <summary>
@@ -80,7 +85,8 @@ namespace DiscordRPC
         /// "TLDR it marks the matchSecret field as an instance, that is to say a context in game that’s not like a lobby state/not in game state. It was gonna he used for notify me, but we scrapped that for ask to join. We may put it to another use in the future. For now, don’t worry about it" - Mason (Discord API Server 14 / 03 / 2018)
         ///    </para>
         /// </summary>
-        [JsonProperty("instance", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("instance")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [Obsolete("This was going to be used, but was replaced by JoinSecret instead")]
         private bool Instance { get; set; }
 
@@ -123,7 +129,6 @@ namespace DiscordRPC
 
         #endregion
 
-
         /// <summary>
         /// Attempts to call <see cref="StringTools.GetNullOrString(string)"/> on the string and return the result, if its within a valid length.
         /// </summary>
@@ -138,14 +143,14 @@ namespace DiscordRPC
             if (str == null)
                 return true;
 
-            //Trim the string, for the best chance of fitting
+            // Trim the string, for the best chance of fitting
             var s = str.Trim();
 
-            //Make sure it fits
+            // Make sure it fits
             if (!s.WithinLength(bytes, encoding))
                 return false;
 
-            //Make sure its not empty
+            // Make sure its not empty
             result = s.GetNullOrString();
             return true;
         }
@@ -153,10 +158,10 @@ namespace DiscordRPC
         /// <summary>
         /// Operator that converts a presence into a boolean for null checks.
         /// </summary>
-        /// <param name="presesnce"></param>
-        public static implicit operator bool(BaseRichPresence presesnce)
+        /// <param name="presence"></param>
+        public static implicit operator bool(BaseRichPresence presence)
         {
-            return presesnce != null;
+            return presence != null;
         }
 
         /// <summary>
@@ -173,7 +178,7 @@ namespace DiscordRPC
             if (State != other.State || Details != other.Details)
                 return false;
 
-            //Checks if the timestamps are different
+            // Checks if the timestamps are different
             if (Timestamps != null)
             {
                 if (other.Timestamps == null ||
@@ -186,7 +191,7 @@ namespace DiscordRPC
                 return false;
             }
 
-            //Checks if the secrets are different
+            // Checks if the secrets are different
             if (Secrets != null)
             {
                 if (other.Secrets == null ||
@@ -200,7 +205,7 @@ namespace DiscordRPC
                 return false;
             }
 
-            //Checks if the timestamps are different
+            // Checks if the timestamps are different
             if (Party != null)
             {
                 if (other.Party == null ||
@@ -215,7 +220,7 @@ namespace DiscordRPC
                 return false;
             }
 
-            //Checks if the assets are different
+            // Checks if the assets are different
             if (Assets != null)
             {
                 if (other.Assets == null ||
@@ -280,12 +285,13 @@ namespace DiscordRPC
     public class Secrets
     {
         /// <summary>
-        /// The unique match code to distinguish different games/lobbies. Use <see cref="Secrets.CreateSecret(Random)"/> to get an appropriately sized secret. 
+        /// The unique match code to distinguish different games/lobbies. Use <see cref="Secrets.CreateSecret(Random)"/> to get an appropriately sized secret.
         /// <para>This cannot be null and must be supplied for the  Join / Spectate feature to work.</para>
         /// <para>Max Length of 128 Bytes</para>
         /// </summary>
-        [Obsolete("This feature has been deprecated my Mason in issue #152 on the offical library. Was originally used as a Notify Me feature, it has been replaced with Join / Spectate.")]
-        [JsonProperty("match", NullValueHandling = NullValueHandling.Ignore)]
+        [Obsolete("This feature has been deprecated my Mason in issue #152 on the official library. Was originally used as a Notify Me feature, it has been replaced with Join / Spectate.")]
+        [JsonPropertyName("match")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string MatchSecret
         {
             get { return _matchSecret; }
@@ -299,12 +305,13 @@ namespace DiscordRPC
 
         /// <summary>
         /// The secret data that will tell the client how to connect to the game to play. This could be a unique identifier for a fancy match maker or player id, lobby id, etc.
-        /// <para>It is recommended to encrypt this information so its hard for people to replicate it. 
+        /// <para>It is recommended to encrypt this information so its hard for people to replicate it.
         /// Do <b>NOT</b> just use the IP address in this. That is a bad practice and can leave your players vulnerable!
         /// </para>
         /// <para>Max Length of 128 Bytes</para>
         /// </summary>
-        [JsonProperty("join", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("join")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string JoinSecret
         {
             get { return _joinSecret; }
@@ -318,12 +325,13 @@ namespace DiscordRPC
 
         /// <summary>
         /// The secret data that will tell the client how to connect to the game to spectate. This could be a unique identifier for a fancy match maker or player id, lobby id, etc.
-        /// <para>It is recommended to encrypt this information so its hard for people to replicate it. 
+        /// <para>It is recommended to encrypt this information so its hard for people to replicate it.
         /// Do <b>NOT</b> just use the IP address in this. That is a bad practice and can leave your players vulnerable!
         /// </para>
         /// <para>Max Length of 128 Bytes</para>
         /// </summary>
-        [JsonProperty("spectate", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("spectate")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string SpectateSecret
         {
             get { return _spectateSecret; }
@@ -334,7 +342,6 @@ namespace DiscordRPC
             }
         }
         private string _spectateSecret;
-
 
         #region Statics
 
@@ -355,15 +362,14 @@ namespace DiscordRPC
         /// <returns>Returns a <see cref="SecretLength"/> sized string with random characters from <see cref="Encoding"/></returns>
         public static string CreateSecret(Random random)
         {
-            //Prepare an array and fill it with random bytes
+            // Prepare an array and fill it with random bytes
             // THIS IS NOT SECURE! DO NOT USE THIS FOR PASSWORDS!
             byte[] bytes = new byte[SecretLength];
             random.NextBytes(bytes);
 
-            //Return the encoding. Probably should remove invalid characters but cannot be fucked.
+            // Return the encoding. Probably should remove invalid characters but cannot be fucked.
             return Encoding.GetString(bytes);
         }
-
 
         /// <summary>
         /// Creates a secret word using more readable friendly characters. Useful for debugging purposes. This is not a cryptographic function and should NOT be used for sensitive information.
@@ -394,7 +400,8 @@ namespace DiscordRPC
         /// <para>Max 256 Bytes.</para>
         /// </summary>
         /// <remarks>Allows URL to directly link to images.</remarks>
-        [JsonProperty("large_image", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("large_image")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string LargeImageKey
         {
             get { return _largeimagekey; }
@@ -403,10 +410,10 @@ namespace DiscordRPC
                 if (!BaseRichPresence.ValidateString(value, out _largeimagekey, 256, Encoding.UTF8))
                     throw new StringOutOfRangeException(256);
 
-                //Get if this is a external link
+                // Get if this is a external link
                 _islargeimagekeyexternal = _largeimagekey?.StartsWith("mp:external/") ?? false;
-                
-                //Reset the large image ID
+
+                // Reset the large image ID
                 _largeimageID = null;
             }
         }
@@ -426,7 +433,8 @@ namespace DiscordRPC
         /// The tooltip for the large square image. For example, "Summoners Rift" or "Horizon Lunar Colony".
         /// <para>Max 128 Bytes.</para>
         /// </summary>
-        [JsonProperty("large_text", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("large_text")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string LargeImageText
         {
             get { return _largeimagetext; }
@@ -438,13 +446,13 @@ namespace DiscordRPC
         }
         private string _largeimagetext;
 
-
         /// <summary>
         /// Name of the uploaded image for the small profile artwork.
         /// <para>Max 256 Bytes.</para>
         /// </summary>
         /// <remarks>Allows URL to directly link to images.</remarks>
-        [JsonProperty("small_image", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("small_image")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string SmallImageKey
         {
             get { return _smallimagekey; }
@@ -453,10 +461,10 @@ namespace DiscordRPC
                 if (!BaseRichPresence.ValidateString(value, out _smallimagekey, 256, Encoding.UTF8))
                     throw new StringOutOfRangeException(256);
 
-                //Get if this is a external link
+                // Get if this is a external link
                 _issmallimagekeyexternal = _smallimagekey?.StartsWith("mp:external/") ?? false;
 
-                //Reset the small image id
+                // Reset the small image id
                 _smallimageID = null;
             }
         }
@@ -471,12 +479,13 @@ namespace DiscordRPC
             get { return _issmallimagekeyexternal; }
         }
         private bool _issmallimagekeyexternal;
-        
+
         /// <summary>
         /// The tooltip for the small circle image. For example, "LvL 6" or "Ultimate 85%".
         /// <para>Max 128 Bytes.</para>
         /// </summary>
-        [JsonProperty("small_text", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("small_text")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string SmallImageText
         {
             get { return _smallimagetext; }
@@ -508,11 +517,11 @@ namespace DiscordRPC
         /// <param name="other"></param>
         internal void Merge(Assets other)
         {
-            //Copy over the names
+            // Copy over the names
             _smallimagetext = other._smallimagetext;
             _largeimagetext = other._largeimagetext;
 
-            //Convert large ID
+            // Convert large ID
             ulong largeID;
             if (ulong.TryParse(other._largeimagekey, out largeID))
             {
@@ -524,7 +533,7 @@ namespace DiscordRPC
                 _largeimageID = null;
             }
 
-            //Convert the small ID
+            // Convert the small ID
             ulong smallID;
             if (ulong.TryParse(other._smallimagekey, out smallID))
             {
@@ -613,7 +622,8 @@ namespace DiscordRPC
         /// <summary>
         /// Converts between DateTime and Milliseconds to give the Unix Epoch Time for the <see cref="Timestamps.Start"/>.
         /// </summary>
-        [JsonProperty("start", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("start")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ulong? StartUnixMilliseconds
         {
             get
@@ -627,12 +637,12 @@ namespace DiscordRPC
             }
         }
 
-
         /// <summary>
         /// Converts between DateTime and Milliseconds to give the Unix Epoch Time  for the <see cref="Timestamps.End"/>.
         /// <seealso cref="End"/>
         /// </summary>
-        [JsonProperty("end", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("end")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public ulong? EndUnixMilliseconds
         {
             get
@@ -693,10 +703,11 @@ namespace DiscordRPC
         }
 
         /// <summary>
-        /// A unique ID for the player's current party / lobby / group. If this is not supplied, they player will not be in a party and the rest of the information will not be sent. 
+        /// A unique ID for the player's current party / lobby / group. If this is not supplied, they player will not be in a party and the rest of the information will not be sent.
         /// <para>Max 128 Bytes</para>
         /// </summary>
-        [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("id")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string ID { get { return _partyid; } set { _partyid = value.GetNullOrString(); } }
         private string _partyid;
 
@@ -707,7 +718,7 @@ namespace DiscordRPC
         public int Size { get; set; }
 
         /// <summary>
-        /// The maxium size of the party / lobby / group. This is required to be larger than <see cref="Size"/>. If it is smaller than the current party size, it will automatically be set too <see cref="Size"/> when the presence is sent.
+        /// The maximum size of the party / lobby / group. This is required to be larger than <see cref="Size"/>. If it is smaller than the current party size, it will automatically be set too <see cref="Size"/> when the presence is sent.
         /// </summary>
         [JsonIgnore]
         public int Max { get; set; }
@@ -715,16 +726,16 @@ namespace DiscordRPC
         /// <summary>
         /// The privacy of the party
         /// </summary>
-        [JsonProperty("privacy", NullValueHandling = NullValueHandling.Include, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonPropertyName("privacy")]
         public PrivacySetting Privacy { get; set; }
 
-
-        [JsonProperty("size", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("size")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         private int[] _size
         {
             get
             {
-                //see issue https://github.com/discordapp/discord-rpc/issues/111
+                // see issue https://github.com/discordapp/discord-rpc/issues/111
                 int size = Math.Max(1, Size);
                 return new int[] { size, Math.Max(size, Max) };
             }
@@ -755,7 +766,7 @@ namespace DiscordRPC
         /// Text shown on the button
         /// <para>Max 32 bytes.</para>
         /// </summary>
-        [JsonProperty("label")]
+        [JsonPropertyName("label")]
         public string Label
         {
             get { return _label; }
@@ -771,7 +782,7 @@ namespace DiscordRPC
         /// The URL opened when clicking the button.
         /// <para>Max 512 bytes.</para>
         /// </summary>
-        [JsonProperty("url")]
+        [JsonPropertyName("url")]
         public string Url
         {
             get { return _url; }
@@ -794,10 +805,11 @@ namespace DiscordRPC
     public sealed class RichPresence : BaseRichPresence
     {
         /// <summary>
-        /// The buttons to display in the presence. 
+        /// The buttons to display in the presence.
         /// <para>Max of 2</para>
         /// </summary>
-        [JsonProperty("buttons", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("buttons")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public Button[] Buttons { get; set; }
 
         /// <summary>
@@ -808,7 +820,6 @@ namespace DiscordRPC
         {
             return Buttons != null && Buttons.Length > 0;
         }
-
 
         #region Builder
         /// <summary>
@@ -878,8 +889,7 @@ namespace DiscordRPC
         }
         #endregion
 
-
-        #region Cloning and Merging 
+        #region Cloning and Merging
 
         /// <summary>
         /// Clones the presence into a new instance. Used for thread safe writing and reading. This function will ignore properties if they are in a invalid state.
@@ -891,11 +901,11 @@ namespace DiscordRPC
             {
                 State = this._state != null ? _state.Clone() as string : null,
                 Details = this._details != null ? _details.Clone() as string : null,
-                
+
                 Buttons = !HasButtons() ? null : this.Buttons.Clone() as Button[],
                 Secrets = !HasSecrets() ? null : new Secrets
                 {
-                    //MatchSecret = this.Secrets.MatchSecret?.Clone() as string,
+                    // MatchSecret = this.Secrets.MatchSecret?.Clone() as string,
                     JoinSecret = this.Secrets.JoinSecret != null ? this.Secrets.JoinSecret.Clone() as string : null,
                     SpectateSecret = this.Secrets.SpectateSecret != null ? this.Secrets.SpectateSecret.Clone() as string : null
                 },
@@ -938,24 +948,24 @@ namespace DiscordRPC
             this.Timestamps = presence.Timestamps;
             this.Secrets = presence.Secrets;
 
-            //If they have assets, we should merge them
+            // If they have assets, we should merge them
             if (presence.HasAssets())
             {
-                //Make sure we actually have assets too
+                // Make sure we actually have assets too
                 if (!this.HasAssets())
                 {
-                    //We dont, so we will just use theirs
+                    // We dont, so we will just use theirs
                     this.Assets = presence.Assets;
                 }
                 else
                 {
-                    //We do, so we better merge them!
+                    // We do, so we better merge them!
                     this.Assets.Merge(presence.Assets);
                 }
             }
             else
             {
-                //They dont have assets, so we will just set ours to null
+                // They dont have assets, so we will just set ours to null
                 this.Assets = null;
             }
 
@@ -966,7 +976,7 @@ namespace DiscordRPC
         {
             if (!base.Matches(other)) return false;
 
-            //Check buttons
+            // Check buttons
             if (Buttons == null ^ other.Buttons == null) return false;
             if (Buttons != null)
             {
@@ -988,10 +998,10 @@ namespace DiscordRPC
         /// <summary>
         /// Operator that converts a presence into a boolean for null checks.
         /// </summary>
-        /// <param name="presesnce"></param>
-        public static implicit operator bool(RichPresence presesnce)
+        /// <param name="presence"></param>
+        public static implicit operator bool(RichPresence presence)
         {
-            return presesnce != null;
+            return presence != null;
         }
     }
 
@@ -1003,14 +1013,13 @@ namespace DiscordRPC
         /// <summary>
         /// ID of the client
         /// </summary>
-        [JsonProperty("application_id")]
+        [JsonPropertyName("application_id")]
         public string ClientID { get; private set; }
 
         /// <summary>
         /// Name of the bot
         /// </summary>
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; private set; }
-
     }
 }
