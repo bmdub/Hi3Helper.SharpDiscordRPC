@@ -100,7 +100,6 @@ namespace DiscordRPC.IO
         public T GetObject<T>()
         {
             string json = GetMessage();
-            Console.WriteLine(json);
             return JsonSerializer.Deserialize<T>(json);
         }
 
