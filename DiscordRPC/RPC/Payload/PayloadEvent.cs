@@ -1,6 +1,5 @@
 ﻿using DiscordRPC.Converters;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace DiscordRPC.RPC.Payload
@@ -15,7 +14,7 @@ namespace DiscordRPC.RPC.Payload
         /// </summary>
         [JsonPropertyName("data")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public JsonValue Data { get; set; }
+        public JsonDocument Data { get; set; }
 
         /// <summary>
         /// The type of event the server sent

@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace DiscordRPC.RPC.Payload
@@ -17,7 +16,7 @@ namespace DiscordRPC.RPC.Payload
         /// </summary>
         [JsonPropertyName("args")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public JsonValue Arguments { get; set; }
+        public JsonDocument Arguments { get; set; }
 
         public ArgumentPayload() { Arguments = null; }
         public ArgumentPayload(long nonce) : base(nonce) { Arguments = null; }
@@ -32,7 +31,7 @@ namespace DiscordRPC.RPC.Payload
         /// <param name="obj"></param>
         public void SetObject(object obj)
         {
-            Arguments = JsonValue.Create(obj);
+            Arguments = JsonSerializer.SerializeToDocument(obj);
         }
 
         /// <summary>
@@ -51,4 +50,3 @@ namespace DiscordRPC.RPC.Payload
         }
     }
 }
-
