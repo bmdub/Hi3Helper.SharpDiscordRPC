@@ -1,8 +1,8 @@
 ﻿using DiscordRPC.Events;
 using DiscordRPC.Helper;
-using DiscordRPC.Message;
 using DiscordRPC.IO;
 using DiscordRPC.Logging;
+using DiscordRPC.Message;
 using DiscordRPC.RPC.Commands;
 using DiscordRPC.RPC.Payload;
 using System;

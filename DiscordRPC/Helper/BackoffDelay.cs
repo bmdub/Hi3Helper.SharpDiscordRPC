@@ -2,7 +2,6 @@
 
 namespace DiscordRPC.Helper
 {
-
     internal class BackoffDelay
     {
         /// <summary>
