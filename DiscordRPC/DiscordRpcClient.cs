@@ -937,13 +937,13 @@ namespace DiscordRPC
 
             // Add the subscribe command to be sent when the connection is able too
             if ((type & EventType.Spectate) == EventType.Spectate)
-                connection.EnqueueCommand(new SubscribeCommand() { Event = RPC.Payload.ServerEvent.ActivitySpectate, IsUnsubscribe = isUnsubscribe });
+                connection.EnqueueCommand(new SubscribeCommand() { Event = RPC.Payload.ServerEvent.ACTIVITY_SPECTATE, IsUnsubscribe = isUnsubscribe });
 
             if ((type & EventType.Join) == EventType.Join)
-                connection.EnqueueCommand(new SubscribeCommand() { Event = RPC.Payload.ServerEvent.ActivityJoin, IsUnsubscribe = isUnsubscribe });
+                connection.EnqueueCommand(new SubscribeCommand() { Event = RPC.Payload.ServerEvent.ACTIVITY_JOIN, IsUnsubscribe = isUnsubscribe });
 
             if ((type & EventType.JoinRequest) == EventType.JoinRequest)
-                connection.EnqueueCommand(new SubscribeCommand() { Event = RPC.Payload.ServerEvent.ActivityJoinRequest, IsUnsubscribe = isUnsubscribe });
+                connection.EnqueueCommand(new SubscribeCommand() { Event = RPC.Payload.ServerEvent.ACTIVITY_JOIN_REQUEST, IsUnsubscribe = isUnsubscribe });
         }
 
         #endregion

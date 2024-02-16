@@ -19,9 +19,9 @@ namespace DiscordRPC.RPC.Commands
 
         public IPayload PreparePayload(long nonce)
         {
-            return new ArgumentPayload(this, nonce)
+            return new ArgumentPayload<PresenceCommand>(this, nonce)
             {
-                Command = Command.SetActivity
+                Command = Command.SET_ACTIVITY
             };
         }
     }

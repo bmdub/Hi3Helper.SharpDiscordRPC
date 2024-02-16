@@ -1,4 +1,6 @@
-﻿using DiscordRPC.Converters;
+﻿#if INCLUDE_FULL_RPC
+using System;
+#endif
 
 namespace DiscordRPC.RPC.Payload
 {
@@ -10,83 +12,62 @@ namespace DiscordRPC.RPC.Payload
         /// <summary>
         /// Sent when the server is ready to accept messages
         /// </summary>
-        [EnumValue("READY")]
-        Ready,
+        READY,
 
         /// <summary>
         /// Sent when something bad has happened
-        /// </summary>
-        [EnumValue("ERROR")]
-        Error,
+        /// </summary
+        ERROR,
 
         /// <summary>
         /// Join Event
         /// </summary>
-        [EnumValue("ACTIVITY_JOIN")]
-        ActivityJoin,
+        ACTIVITY_JOIN,
 
         /// <summary>
         /// Spectate Event
         /// </summary>
-        [EnumValue("ACTIVITY_SPECTATE")]
-        ActivitySpectate,
+        ACTIVITY_SPECTATE,
 
         /// <summary>
         /// Request Event
         /// </summary>
-        [EnumValue("ACTIVITY_JOIN_REQUEST")]
-        ActivityJoinRequest,
+        ACTIVITY_JOIN_REQUEST,
 
 #if INCLUDE_FULL_RPC
         // Old things that are obsolete
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("GUILD_STATUS")]
-        GuildStatus,
+        GUILD_STATUS,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("GUILD_CREATE")]
-        GuildCreate,
+        GUILD_CREATE,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("CHANNEL_CREATE")]
-        ChannelCreate,
+        CHANNEL_CREATE,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("VOICE_CHANNEL_SELECT")]
-        VoiceChannelSelect,
+        VOICE_CHANNEL_SELECT,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("VOICE_STATE_CREATED")]
-        VoiceStateCreated,
+        VOICE_STATE_CREATED,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("VOICE_STATE_UPDATED")]
-        VoiceStateUpdated,
+        VOICE_STATE_UPDATED,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("VOICE_STATE_DELETE")]
-        VoiceStateDelete,
+        VOICE_STATE_DELETE,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("VOICE_SETTINGS_UPDATE")]
-        VoiceSettingsUpdate,
+        VOICE_SETTINGS_UPDATE,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("VOICE_CONNECTION_STATUS")]
-        VoiceConnectionStatus,
+        VOICE_CONNECTION_STATUS,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("SPEAKING_START")]
-        SpeakingStart,
+        SPEAKING_START,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("SPEAKING_STOP")]
-        SpeakingStop,
+        SPEAKING_STOP,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("MESSAGE_CREATE")]
-        MessageCreate,
+        MESSAGE_CREATE,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("MESSAGE_UPDATE")]
-        MessageUpdate,
+        MESSAGE_UPDATE,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("MESSAGE_DELETE")]
-        MessageDelete,
+        MESSAGE_DELETE,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("NOTIFICATION_CREATE")]
-        NotificationCreate,
+        NOTIFICATION_CREATE,
         [Obsolete("This value is a part of the RPC API and is not supported by this library.", true)]
-        [EnumValue("CAPTURE_SHORTCUT_CHANGE")]
-        CaptureShortcutChange
+        CAPTURE_SHORTCUT_CHANGE
 #endif
     }
 }

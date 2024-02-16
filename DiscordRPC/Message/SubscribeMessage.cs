@@ -22,15 +22,15 @@ namespace DiscordRPC.Message
             switch (evt)
             {
                 default:
-                case ServerEvent.ActivityJoin:
+                case ServerEvent.ACTIVITY_JOIN:
                     Event = EventType.Join;
                     break;
 
-                case ServerEvent.ActivityJoinRequest:
+                case ServerEvent.ACTIVITY_JOIN_REQUEST:
                     Event = EventType.JoinRequest;
                     break;
 
-                case ServerEvent.ActivitySpectate:
+                case ServerEvent.ACTIVITY_SPECTATE:
                     Event = EventType.Spectate;
                     break;
             }

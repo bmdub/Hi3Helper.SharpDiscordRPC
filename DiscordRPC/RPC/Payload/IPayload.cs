@@ -1,5 +1,4 @@
-﻿using DiscordRPC.Converters;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace DiscordRPC.RPC.Payload
 {
@@ -11,7 +10,7 @@ namespace DiscordRPC.RPC.Payload
         /// <summary>
         /// The type of payload
         /// </summary>
-        [JsonPropertyName("cmd"), JsonConverter(typeof(EnumSnakeCaseConverter))]
+        [JsonPropertyName("cmd"), JsonConverter(typeof(JsonStringEnumConverter<Command>))]
         public Command Command { get; set; }
 
         /// <summary>

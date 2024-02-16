@@ -1,4 +1,4 @@
-﻿using DiscordRPC.Converters;
+﻿using DiscordRPC.Helper;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -19,7 +19,7 @@ namespace DiscordRPC.RPC.Payload
         /// <summary>
         /// The type of event the server sent
         /// </summary>
-        [JsonPropertyName("evt"), JsonConverter(typeof(EnumSnakeCaseConverter))]
+        [JsonPropertyName("evt"), JsonConverter(typeof(JsonStringEnumConverter<ServerEvent>))]
         public ServerEvent? Event { get; set; }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace DiscordRPC.RPC.Payload
         public T GetObject<T>()
         {
             if (Data == null) return default(T);
-            return Data.Deserialize<T>();
+            return (T)Data.Deserialize(typeof(T), JsonSerializationContext.Default);
         }
 
         /// <summary>

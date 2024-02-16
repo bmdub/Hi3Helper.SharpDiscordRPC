@@ -19,9 +19,9 @@ namespace DiscordRPC.RPC.Commands
 
         public IPayload PreparePayload(long nonce)
         {
-            return new ArgumentPayload()
+            return new ArgumentPayload<CloseCommand>()
             {
-                Command = Command.Dispatch,
+                Command = Command.DISPATCH,
                 Nonce = null,
                 Arguments = null
             };

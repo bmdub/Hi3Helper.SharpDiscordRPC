@@ -1,5 +1,4 @@
-﻿using DiscordRPC.Converters;
-using System;
+﻿using System;
 
 namespace DiscordRPC.RPC.Payload
 {
@@ -11,38 +10,32 @@ namespace DiscordRPC.RPC.Payload
         /// <summary>
         /// event dispatch
         /// </summary>
-        [EnumValue("DISPATCH")]
-        Dispatch,
+        DISPATCH,
 
         /// <summary>
         /// Called to set the activity
         /// </summary>
-        [EnumValue("SET_ACTIVITY")]
-        SetActivity,
+        SET_ACTIVITY,
 
         /// <summary>
         /// used to subscribe to an RPC event
         /// </summary>
-        [EnumValue("SUBSCRIBE")]
-        Subscribe,
+        SUBSCRIBE,
 
         /// <summary>
         /// used to unsubscribe from an RPC event
         /// </summary>
-        [EnumValue("UNSUBSCRIBE")]
-        Unsubscribe,
+        UNSUBSCRIBE,
 
         /// <summary>
         /// Used to accept join requests.
         /// </summary>
-        [EnumValue("SEND_ACTIVITY_JOIN_INVITE")]
-        SendActivityJoinInvite,
+        SEND_ACTIVITY_JOIN_INVITE,
 
         /// <summary>
         /// Used to reject join requests.
-        /// </summary>
-        [EnumValue("CLOSE_ACTIVITY_JOIN_REQUEST")]
-        CloseActivityJoinRequest,
+        /// </summary
+        CLOSE_ACTIVITY_JOIN_REQUEST,
 
         /// <summary>
         /// used to authorize a new client with your app

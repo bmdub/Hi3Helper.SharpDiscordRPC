@@ -1,7 +1,9 @@
-﻿using System;
+﻿using DiscordRPC.Helper;
+using System;
 using System.IO;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization.Metadata;
 
 namespace DiscordRPC.IO
 {
@@ -75,9 +77,10 @@ namespace DiscordRPC.IO
         /// Serializes the object into json string then encodes it into <see cref="Data"/>.
         /// </summary>
         /// <param name="obj"></param>
-        public void SetObject(object obj)
+        public void SetObject<TObj>(TObj obj)
+            where TObj : class
         {
-            string json = JsonSerializer.Serialize(obj);
+            string json = JsonSerializer.Serialize(obj, typeof(TObj), JsonSerializationContext.Default);
             SetMessage(json);
         }
 
@@ -98,9 +101,10 @@ namespace DiscordRPC.IO
         /// <typeparam name="T">The type to deserialize into</typeparam>
         /// <returns></returns>
         public T GetObject<T>()
+            where T : class
         {
             string json = GetMessage();
-            return JsonSerializer.Deserialize<T>(json);
+            return (T)JsonSerializer.Deserialize(json, typeof(T), JsonSerializationContext.Default);
         }
 
         /// <summary>
