@@ -1,4 +1,5 @@
 ﻿using DiscordRPC.IO;
+using DiscordRPC.Message;
 using DiscordRPC.RPC.Commands;
 using DiscordRPC.RPC.Payload;
 using System.Text.Json.Serialization;
@@ -21,7 +22,24 @@ namespace DiscordRPC.Helper
         JsonSerializable(typeof(ArgumentPayload<CloseCommand>)),
 
     /* IO Context */
-        JsonSerializable(typeof(Handshake))
+        JsonSerializable(typeof(Handshake)),
+
+    /* Message Context */
+        JsonSerializable(typeof(CloseMessage)),
+        JsonSerializable(typeof(ConnectionEstablishedMessage)),
+        JsonSerializable(typeof(ConnectionFailedMessage)),
+        JsonSerializable(typeof(ErrorMessage)),
+        JsonSerializable(typeof(IMessage)),
+        JsonSerializable(typeof(JoinMessage)),
+        JsonSerializable(typeof(JoinRequestMessage)),
+        JsonSerializable(typeof(PresenceMessage)),
+        JsonSerializable(typeof(ReadyMessage)),
+        JsonSerializable(typeof(SpectateMessage)),
+        JsonSerializable(typeof(SubscribeMessage)),
+        JsonSerializable(typeof(UnsubscribeMessage)),
+
+    /* Rich Presence Context */
+        JsonSerializable(typeof(RichPresenceResponse)),
     ]
     internal partial class JsonSerializationContext : JsonSerializerContext { }
 }
