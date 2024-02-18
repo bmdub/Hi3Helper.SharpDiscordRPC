@@ -5,8 +5,12 @@ This is a fork from the original repo by [**Lachee**](https://github.com/Lachee/
 This fork mainly makes the following changes to work within [Collapse Launcher](https://github.com/CollapseLauncher/Collapse):
 - Target at .NET 8.0
 - Migrate from Newtonsoft.Json to System.Text.Json
+- Add trim compatibility (only for DiscordRPC)
+- Removed unused NuGet references from Csproj
 
 The original readme reads as follows:
+
+---
 
 [![Release 📦](https://github.com/Lachee/discord-rpc-csharp/actions/workflows/release.yml/badge.svg)](https://github.com/Lachee/discord-rpc-csharp/actions/workflows/release.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/30c4e9f58b7f4a058f79ad0acd743edf)](https://www.codacy.com/gh/Lachee/discord-rpc-csharp/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Lachee/discord-rpc-csharp&amp;utm_campaign=Badge_Grade) [![Nuget](https://img.shields.io/nuget/v/DiscordRichPresence.svg)](https://www.nuget.org/packages/DiscordRichPresence/) 
