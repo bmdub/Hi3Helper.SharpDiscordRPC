@@ -1,9 +1,11 @@
-﻿namespace DiscordRPC
+﻿using System;
+
+namespace DiscordRPC
 {
     /// <summary>
     /// The type of event received by the RPC. A flag type that can be combined.
     /// </summary>
-    [System.Flags]
+    [Flags]
     public enum EventType
     {
         /// <summary>

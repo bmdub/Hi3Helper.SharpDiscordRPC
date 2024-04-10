@@ -2,9 +2,9 @@
 #define USE_RUNTIME_INFO
 #endif
 
-using DiscordRPC.Logging;
-using System;
-using System.Diagnostics;
+    using DiscordRPC.Logging;
+    using System;
+    using System.Diagnostics;
 #if USE_RUNTIME_INFO
 using System.Runtime.InteropServices;
 #endif

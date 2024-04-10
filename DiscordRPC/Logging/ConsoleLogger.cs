@@ -20,7 +20,7 @@ namespace DiscordRPC.Logging
         /// <summary>
         /// A alias too <see cref="Coloured"/>
         /// </summary>
-        [System.Obsolete("Use Coloured")]
+        [Obsolete("Use Coloured")]
         public bool Colored {
             get => Coloured;
             set => Coloured = value;

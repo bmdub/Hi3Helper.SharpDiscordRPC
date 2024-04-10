@@ -7,6 +7,7 @@ using DiscordRPC.RPC.Commands;
 using DiscordRPC.RPC.Payload;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Threading;
 
 namespace DiscordRPC.RPC
@@ -272,7 +273,7 @@ namespace DiscordRPC.RPC
             if (Logger.Level <= LogLevel.Trace)
             {
                 Logger.Trace("============================");
-                Logger.Trace("Assembly:             " + System.Reflection.Assembly.GetAssembly(typeof(RichPresence)).FullName);
+                Logger.Trace("Assembly:             " + Assembly.GetAssembly(typeof(RichPresence)).FullName);
                 Logger.Trace("Pipe:                 " + namedPipe.GetType().FullName);
                 Logger.Trace("Platform:             " + Environment.OSVersion.ToString());
                 Logger.Trace("applicationID:        " + applicationID);

@@ -6,7 +6,9 @@ using DiscordRPC.Message;
 using DiscordRPC.Registry;
 using DiscordRPC.RPC;
 using DiscordRPC.RPC.Commands;
+using DiscordRPC.RPC.Payload;
 using System;
+using System.Diagnostics;
 
 namespace DiscordRPC
 {
@@ -222,7 +224,7 @@ namespace DiscordRPC
             // Store the properties
             ApplicationID = applicationID.Trim();
             TargetPipe = pipe;
-            ProcessID = System.Diagnostics.Process.GetCurrentProcess().Id;
+            ProcessID = Process.GetCurrentProcess().Id;
             HasRegisteredUriScheme = false;
             AutoEvents = autoEvents;
             SkipIdenticalPresence = true;
@@ -937,13 +939,13 @@ namespace DiscordRPC
 
             // Add the subscribe command to be sent when the connection is able too
             if ((type & EventType.Spectate) == EventType.Spectate)
-                connection.EnqueueCommand(new SubscribeCommand() { Event = RPC.Payload.ServerEvent.ACTIVITY_SPECTATE, IsUnsubscribe = isUnsubscribe });
+                connection.EnqueueCommand(new SubscribeCommand() { Event = ServerEvent.ACTIVITY_SPECTATE, IsUnsubscribe = isUnsubscribe });
 
             if ((type & EventType.Join) == EventType.Join)
-                connection.EnqueueCommand(new SubscribeCommand() { Event = RPC.Payload.ServerEvent.ACTIVITY_JOIN, IsUnsubscribe = isUnsubscribe });
+                connection.EnqueueCommand(new SubscribeCommand() { Event = ServerEvent.ACTIVITY_JOIN, IsUnsubscribe = isUnsubscribe });
 
             if ((type & EventType.JoinRequest) == EventType.JoinRequest)
-                connection.EnqueueCommand(new SubscribeCommand() { Event = RPC.Payload.ServerEvent.ACTIVITY_JOIN_REQUEST, IsUnsubscribe = isUnsubscribe });
+                connection.EnqueueCommand(new SubscribeCommand() { Event = ServerEvent.ACTIVITY_JOIN_REQUEST, IsUnsubscribe = isUnsubscribe });
         }
 
         #endregion
