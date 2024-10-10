@@ -2,18 +2,18 @@
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>portable</DebugType>
-    <Platforms>x64</Platforms>
-    <!-- Assembly Info Properties -->
-    <AssemblyName>DiscordRPC</AssemblyName>
-    <ProductName>DiscordRPC</ProductName>
-    <Product>DiscordRPC</Product>
-    <Description>C# custom implementation for Discord Rich Presence</Description>
-    <Company>Collapse Launcher Team</Company>
-    <Authors>Lachee -> $(Company). neon-nyan, Cry0, bagusnl, shatyuka, gablm.</Authors>
-    <Copyright>Copyright 2022-2024 $(Company)</Copyright>
+	  <DebugType>portable</DebugType>
+	  <Platforms>x64</Platforms>
+	  <!-- Assembly Info Properties -->
+	  <AssemblyName>DiscordRPC</AssemblyName>
+	  <ProductName>DiscordRPC</ProductName>
+	  <Product>DiscordRPC</Product>
+	  <Description>C# custom implementation for Discord Rich Presence</Description>
+	  <Company>Collapse Launcher Team</Company>
+	  <Authors>Lachee -> $(Company). neon-nyan, Cry0, bagusnl, shatyuka, gablm.</Authors>
+	  <Copyright>Copyright 2022-2024 $(Company)</Copyright>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="8.0.4" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
   </ItemGroup>
 </Project>
