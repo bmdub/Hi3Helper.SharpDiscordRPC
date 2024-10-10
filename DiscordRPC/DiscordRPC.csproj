@@ -3,7 +3,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <DebugType>portable</DebugType>
-	  <Platforms>x64</Platforms>
 	  <!-- Assembly Info Properties -->
 	  <AssemblyName>DiscordRPC</AssemblyName>
 	  <ProductName>DiscordRPC</ProductName>
